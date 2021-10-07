@@ -8,15 +8,12 @@ export const encodeRequestSuccsess = (encode) => ({ type: ENCODE_SUCCESS });
 export const decodeRequestSuccsess = (decode) => ({ type: DECODE_SUCCESS });
 export const requestFailure = (error) => ({ type: REQUEST_FAILURE });
 
-export const sendEncode = (sendData , pass) => {
+export const sendEncode = (sendData) => {
     return async dispatch => {
         try {
-            if (pass === '') {
-                alert('Please, Enter Password')
-            } else {
-                await axiosApi.post('encode', sendData);
-                dispatch(encodeRequestSuccsess());
-            }
+
+            await axiosApi.post('encode', sendData);
+            dispatch(encodeRequestSuccsess());
 
         } catch (error) {
             dispatch(requestFailure(error));
@@ -25,15 +22,12 @@ export const sendEncode = (sendData , pass) => {
     }
 };
 
-export const sendDecode = (sendData, pass) => {
+export const sendDecode = (sendData) => {
     return async dispatch => {
         try {
-            if (pass === '') {
-                alert('Please, Enter Password')
-            } else {
-                await axiosApi.post('decode', sendData);
-                dispatch(decodeRequestSuccsess());
-            }
+
+            await axiosApi.post('decode', sendData);
+            dispatch(decodeRequestSuccsess());
 
         } catch (error) {
             dispatch(requestFailure(error));

@@ -5,6 +5,7 @@ import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import {sendDecode , sendEncode} from '../../store/actions/actions'
 import { useDispatch } from "react-redux";
+import axiosApi from '../../axiosApi';
 
 const InputFields = () => {
     const dispatch = useDispatch();
@@ -15,35 +16,44 @@ const InputFields = () => {
         password: '',
     });
 
+    
     const onInputChange = e => {
-
+        e.preventDefault();
         const { name, value } = e.target;
-
+        
         setInput(prev => ({
             ...prev,
             [name]: value
         }));
     };
-
+    
     const decode = async e => {
         e.preventDefault();
-
+        
         try {
             await dispatch(sendDecode({ ...input }));
         } catch (e) {
             console.log('error happened');
         }
     };
-
+    
     const encode = async e => {
         e.preventDefault();
-
+        
         try {
             await dispatch(sendEncode({ ...input }));
         } catch (e) {
             console.log('error happened');
         }
     };
+    
+    useEffect(() => {   
+        const fetchCode = async () => {
+            const response = await axiosApi.get('encode');
+            setInput(response.data);
+        }
+        fetchCode().catch(console.error);
+    }, []);
 
     return (
         <Grid container direction="column" spacing={2}  mt={3} >
@@ -81,10 +91,10 @@ const InputFields = () => {
                                 sx={{ margin: '0 15px' }}
                             />
                             <ButtonGroup disableElevation variant="contained" sx={{ margin: '15px 0'}}>
-                                <Button>
+                                <Button onClick={decode}>
                                     <ArrowLeftIcon />
                                 </Button>
-                                <Button>
+                                <Button onClick={encode}>
                                     <ArrowRightIcon />
                                 </Button>
                             </ButtonGroup>
